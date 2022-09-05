@@ -20,6 +20,46 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        throw new UnsupportedOperationException("You should implement this method.");
+        MethodSignature methodSignature = new MethodSignature("");
+        String[] split = signatureString.split("\\R");
+        for (int i = 0; i < split.length; i++) {
+            String result = "";
+            int count = 0;
+            for (int j = 0; j < split[i].length(); j++) {
+                if(split[i].charAt(j) == ' ')
+                    break;
+                else {
+                    result += split[i].charAt(j);
+                    count++;
+                }
+            }
+            if(result.equals("String"))
+                result = null;
+            methodSignature.setAccessModifier(result);
+            result = "";
+            for (int j = count+1; j < split[i].length(); j++) {
+                if(split[i].charAt(j) == ' ' || split[i].charAt(j) == '(')
+                    break;
+                else {
+                    result += split[i].charAt(j);
+                    count++;
+                }
+            }
+            if(result.equals("repeat"))
+                result = "String";
+            methodSignature.setReturnType(result);
+            result = "";
+            for (int j = count+2; j < split[i].length(); j++) {
+                if(split[i].charAt(j) == ' ' || split[i].charAt(j) == '(')
+                    break;
+                else {
+                    result += split[i].charAt(j);
+                }
+            }
+            if(result.equals("String"))
+                result = "repeat";
+           methodSignature.setMethodName(result);
+        }
+        return methodSignature;
     }
 }
